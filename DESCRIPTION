@@ -16,6 +16,7 @@ Imports:
     cli,
     dplyr,
     lubridate,
+    methods,
     purrr,
     rlang
 Depends: 
