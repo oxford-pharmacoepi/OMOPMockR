@@ -53,7 +53,7 @@ It creates a mock database with the vocabulary.
 \examples{
 \donttest{
 library(OmopMocker)
-cdm <- mockVocabularyCdm()
+cdm <- "cdm"
 cdm
 }
 
