@@ -159,7 +159,7 @@ createCohortAttrition <- function(cohort) {
 #'
 #' @return A cdm_reference object
 #'
-#' @export
+#' @noRd
 #'
 generatePersonObservationPeriod <- function(cdm,
                                             individuals = NULL,
@@ -374,7 +374,7 @@ observationPeriodFromCdm <- function(cdm, individuals) {
 #'
 #' @return A cdm_reference object
 #'
-#' @export
+#' @noRd
 #'
 generateClinicalDataTable <- function(cdm,
                                       tableName,
@@ -463,7 +463,7 @@ addDates <- function(x, cols, observationPeriod) {
 #'
 #' @return A cdm_reference object
 #'
-#' @export
+#' @noRd
 #'
 generateCohortTable <- function(cdm,
                                 tableName = "cohort",
