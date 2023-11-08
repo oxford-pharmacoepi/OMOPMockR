@@ -16,12 +16,12 @@
 
 # Check if it contains a list of omop objects.
 checkElements <- function(elements, call = parent.frame()) {
-  CDMUtilities::assertList(elements, named = TRUE, call = call)
+  assertList(elements, named = TRUE, call = call)
 }
 
 # Check if it is a valid path
 checkPath <- function(path, call = parent.frame()) {
-  CDMUtilities::assertCharacter(path, length = 1, call = call)
+  assertCharacter(path, length = 1, call = call)
   if (dir.exists(path) == FALSE) {
     cli::cli_abort(paste0("directory (", path, ") does not exist"), call = call)
   }
@@ -29,97 +29,97 @@ checkPath <- function(path, call = parent.frame()) {
 
 # Check if it is a valid resultStem
 checkResultsStem <- function(resultsStem, call = parent.frame()) {
-  CDMUtilities::assertCharacter(resultsStem, length = 1, minNumCharacter = 5, call = call)
+  assertCharacter(resultsStem, length = 1, minNumCharacter = 5, call = call)
 }
 
 # Check if zip should be displayed
 checkZip <- function(zip, call = parent.frame()) {
-  CDMUtilities::assertLogical(zip, length = 1, call = call)
+  assertLogical(zip, length = 1, call = call)
 }
 
 # Check if it is a list of tables from the same source
 checkCdmTables <- function(cdmTables, call = parent.frame()) {
-  CDMUtilities::assertList(cdmTables, named = TRUE, call = call)
+  assertList(cdmTables, named = TRUE, call = call)
 }
 
 # Check valid cdm name.
 checkCdmName <- function(cdmName, call = parent.frame()) {
-  CDMUtilities::assertCharacter(cdmName, length = 1, call = call)
+  assertCharacter(cdmName, length = 1, call = call)
 }
 
 # Check cdm source table.
 checkCdmSource <- function(cdmSource, call = parent.frame()) {
-  CDMUtilities::assertTibble(cdmSource, null = TRUE, call = call)
+  assertTibble(cdmSource, null = TRUE, call = call)
 }
 
 # Check concept table.
 checkConcept <- function(concept, call = parent.frame()){
-  CDMUtilities::assertTibble(concept, null = TRUE, call = call)
+  assertTibble(concept, null = TRUE, call = call)
 }
 
 # Check vocabulary table.
 checkVocabulary <- function(vocabulary, call = parent.frame()){
-  CDMUtilities::assertTibble(vocabulary, null = TRUE, call = call)
+  assertTibble(vocabulary, null = TRUE, call = call)
 }
 
 # Check domain table.
 checkDomain <- function(domain, call = parent.frame()){
-  CDMUtilities::assertTibble(domain, null = TRUE, call = call)
+  assertTibble(domain, null = TRUE, call = call)
 }
 
 # Check conceptClass table.
 checkConceptClass <- function(conceptClass, call = parent.frame()){
-  CDMUtilities::assertTibble(conceptClass, null = TRUE, call = call)
+  assertTibble(conceptClass, null = TRUE, call = call)
 }
 
 # Check conceptRelationship table.
 checkConceptRelationship <- function(conceptRelationship, call = parent.frame()){
-  CDMUtilities::assertTibble(conceptRelationship, null = TRUE, call = call)
+  assertTibble(conceptRelationship, null = TRUE, call = call)
 }
 
 # Check conceptSynonym table.
 checkConceptSynonym <- function(conceptSynonym, call = parent.frame()){
-  CDMUtilities::assertTibble(conceptSynonym, null = TRUE, call = call)
+  assertTibble(conceptSynonym, null = TRUE, call = call)
 }
 
 # Check conceptAncestor table.
 checkConceptAncestor <- function(conceptAncestor, call = parent.frame()){
-  CDMUtilities::assertTibble(conceptAncestor, null = TRUE, call = call)
+  assertTibble(conceptAncestor, null = TRUE, call = call)
 }
 
 # Check sourceToConceptMap table.
 checkSourceToConceptMap <- function(sourceToConceptMap, call = parent.frame()){
-  CDMUtilities::assertTibble(sourceToConceptMap, null = TRUE, call = call)
+  assertTibble(sourceToConceptMap, null = TRUE, call = call)
 }
 
 # Check drugStrength table.
 checkDrugStrength <- function(drugStrength, call = parent.frame()){
-  CDMUtilities::assertTibble(drugStrength, null = TRUE, call = call)
+  assertTibble(drugStrength, null = TRUE, call = call)
 }
 
 # check cdmVersion
 checkCdmVersion <- function(cdmVersion, call = parent.frame()) {
-  CDMUtilities::assertChoice(cdmVersion, c("5.3", "5.4"), call = call)
+  assertChoice(cdmVersion, c("5.3", "5.4"), call = call)
 }
 
 # check string
 checkString <- function(string, call = parent.frame()) {
-  CDMUtilities::assertCharacter(string, na = TRUE, call = call)
+  assertCharacter(string, na = TRUE, call = call)
 }
 
 # check intermediateAsTemp
 checkIntermediateAsTemp <- function(intermediateAsTemp, call = parent.frame()) {
-  CDMUtilities::assertLogical(intermediateAsTemp, call = call)
+  assertLogical(intermediateAsTemp, call = call)
 }
 
 # check cohortAsTemp
 checkCohortAsTemp <- function(cohortAsTemp, call = parent.frame()) {
-  CDMUtilities::assertLogical(cohortAsTemp, call = call)
+  assertLogical(cohortAsTemp, call = call)
 }
 
 # check cohortTable
 checkCohortTable <- function(cohortTable, call = parent.frame()) {
-  CDMUtilities::assertTibble(
+  assertTibble(
     cohortTable,
     columns = c(
       "cohort_definition_id", "subject_id", "cohort_start_date",
@@ -131,7 +131,7 @@ checkCohortTable <- function(cohortTable, call = parent.frame()) {
 
 # check cohortSetTable
 checkCohortSetTable <- function(cohortSetTable, call = parent.frame()) {
-  CDMUtilities::assertTibble(
+  assertTibble(
     cohortSetTable,
     columns = c("cohort_definition_id", "cohort_name"),
     null = TRUE,
@@ -141,7 +141,7 @@ checkCohortSetTable <- function(cohortSetTable, call = parent.frame()) {
 
 # check cohortAttritionTable
 checkCohortAttritionTable <- function(cohortAttritionTable, call = parent.frame()) {
-  CDMUtilities::assertTibble(
+  assertTibble(
     cohortAttritionTable,
     columns = c(
       "cohort_definition_id", "reason_id", "reason", "number_records",
@@ -154,7 +154,7 @@ checkCohortAttritionTable <- function(cohortAttritionTable, call = parent.frame(
 
 # check cohortCountTable
 checkCohortCountTable <- function(cohortCountTable, call = parent.frame()) {
-  CDMUtilities::assertTibble(
+  assertTibble(
     cohortCountTable,
     columns = c("cohort_definition_id", "number_records", "number_subjects"),
     null = TRUE,
@@ -199,9 +199,9 @@ checkIndividuals <- function(individuals, person, call = parent.frame()) {
       "observation_end"
     )
     if (is.numeric(individuals)) {
-      CDMUtilities::assertNumeric(x = individuals, integerish = TRUE, length = 1, call = call)
+      assertNumeric(x = individuals, integerish = TRUE, length = 1, call = call)
     } else if ("tbl" %in% class(individuals)) {
-      CDMUtilities::assertTibble(individuals, columns = columns, call = call)
+      assertTibble(individuals, columns = columns, call = call)
     } else {
       cli::cli_abort(
         "individuals must be a numeric or a tbl element", call = call
@@ -217,57 +217,57 @@ checkIndividuals <- function(individuals, person, call = parent.frame()) {
 
 # check person
 checkPerson <- function(person, call = parent.frame()) {
-  CDMUtilities::assertTibble(person, null = TRUE, call = call)
+  assertTibble(person, null = TRUE, call = call)
 }
 
 # check observationPeriod
 checkObservationPeriod <- function(observationPeriod, call = parent.frame()) {
-  CDMUtilities::assertTibble(observationPeriod, null = TRUE, call = call)
+  assertTibble(observationPeriod, null = TRUE, call = call)
 }
 
 # check death
 checkDeath <- function(death, call = parent.frame()) {
-  CDMUtilities::assertTibble(death, null = TRUE, call = call)
+  assertTibble(death, null = TRUE, call = call)
 }
 
 # check conditionOccurrence
 checkConditionOccurrence <- function(conditionOccurrence, call = parent.frame()) {
-  CDMUtilities::assertTibble(conditionOccurrence, null = TRUE, call = call)
+  assertTibble(conditionOccurrence, null = TRUE, call = call)
 }
 
 # check drugExposure
 checkDrugExposure <- function(drugExposure, call = parent.frame()) {
-  CDMUtilities::assertTibble(drugExposure, null = TRUE, call = call)
+  assertTibble(drugExposure, null = TRUE, call = call)
 }
 
 # check procedureOccurrence
 checkProcedureOccurrence <- function(procedureOccurrence, call = parent.frame()) {
-  CDMUtilities::assertTibble(procedureOccurrence, null = TRUE, call = call)
+  assertTibble(procedureOccurrence, null = TRUE, call = call)
 }
 
 # check deviceExposure
 checkDeviceExposure <- function(deviceExposure, call = parent.frame()) {
-  CDMUtilities::assertTibble(deviceExposure, null = TRUE, call = call)
+  assertTibble(deviceExposure, null = TRUE, call = call)
 }
 
 # check measurement
 checkMeasurement <- function(measurement, call = parent.frame()) {
-  CDMUtilities::assertTibble(measurement, null = TRUE, call = call)
+  assertTibble(measurement, null = TRUE, call = call)
 }
 
 # check observation
 checkObservation <- function(observation, call = parent.frame()) {
-  CDMUtilities::assertTibble(observation, null = TRUE, call = call)
+  assertTibble(observation, null = TRUE, call = call)
 }
 
 # check seed
 checkSeed <- function(seed, call = parent.frame()) {
-  CDMUtilities::assertNumeric(seed, integerish = TRUE, min = 1, length = 1, call = call)
+  assertNumeric(seed, integerish = TRUE, min = 1, length = 1, call = call)
 }
 
 # check numberRecords
 checkNumberRecords <- function(numberRecords, call = parent.frame()) {
-  CDMUtilities::assertNumeric(numberRecords, min = 0, named = TRUE, call = call)
+  assertNumeric(numberRecords, min = 0, named = TRUE, call = call)
   nam <- c(
     "death", "observationPeriod", "conditionOccurrence", "drugExposure",
     "procedureOccurrence", "deviceExposure", "measurement", "observation"

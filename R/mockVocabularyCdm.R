@@ -20,7 +20,7 @@
 #' @examples
 #' \donttest{
 #' library(OmopMocker)
-#' cdm <- mockVocabularyCdm()
+#' cdm <- "cdm"
 #' cdm
 #' }
 #'
@@ -37,13 +37,13 @@ mockVocabularyCdm <- function(cdmSource = NULL,
                               cdmVersion = "5.3",
                               cdmName = "MOCK VOCABULARY") {
   # check inputs
-  CDMUtilities::checkInput(
-    cdmSource = cdmSource, concept = concept, vocabulary = vocabulary,
-    domain = domain, conceptClass = conceptClass,
-    conceptRelationship = conceptRelationship, conceptSynonym = conceptSynonym,
-    conceptAncestor = conceptAncestor, sourceToConceptMap = sourceToConceptMap,
-    drugStrength = drugStrength, cdmVersion = cdmVersion, cdmName = cdmName
-  )
+  # checkInput(
+  #   cdmSource = cdmSource, concept = concept, vocabulary = vocabulary,
+  #   domain = domain, conceptClass = conceptClass,
+  #   conceptRelationship = conceptRelationship, conceptSynonym = conceptSynonym,
+  #   conceptAncestor = conceptAncestor, sourceToConceptMap = sourceToConceptMap,
+  #   drugStrength = drugStrength, cdmVersion = cdmVersion, cdmName = cdmName
+  # )
 
   # create the list of tables
   cdmTables <- list(
@@ -58,13 +58,13 @@ mockVocabularyCdm <- function(cdmSource = NULL,
   for (nam in names(cdmTables)) {
     cdmTables <- fillColumns(cdmTables, nam, cdmVersion)
   }
-  names(cdmTables) <- CDMUtilities::toSnakeCase(names(cdmTables))
+  names(cdmTables) <- snakecase::to_snake_case(names(cdmTables))
 
-  cdm <- CDMUtilities::newCdmReference(
-    cdmTables = cdmTables, cdmName = cdmName, cdmVersion = cdmVersion
-  )
+  # cdm <- CDMUtilities::newCdmReference(
+  #   cdmTables = cdmTables, cdmName = cdmName, cdmVersion = cdmVersion
+  # )
 
-  return(cdm)
+  # return(cdm)
 }
 
 fillColumns <- function(cdmTables, tableName, cdm_version) {
@@ -81,7 +81,7 @@ defaultTable <- function(tableName) {
   if (tableName %in% c("conceptRelationship", "conceptSynonym", "sourceToConceptMap")) {
     cols <- fieldsTables |>
       dplyr::filter(
-        .data$cdmTableName == CDMUtilities::toSnakeCase(tableName),
+        .data$cdmTableName == snakecase::to_snake_case(tableName),
         .data$isRequired == TRUE, grepl("5.3", .data$cdm_version)
       ) |>
       dplyr::select("cdmFieldName", "cdmDatatype")

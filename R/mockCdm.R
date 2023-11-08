@@ -54,7 +54,7 @@ mockCdm <- function(cdmVocabulary = mockVocabularyCdm(),
                     seed = 1,
                     ...) {
   # check inputs
-  CDMUtilities::checkInput(
+  checkInput(
     cdmVocabulary = cdmVocabulary, cdmName = cdmName, individuals = individuals,
     numberRecords = numberRecords, seed = seed, cdmTables = list(
       person = person, observationPeriod = observationPeriod, death = death,
@@ -81,9 +81,9 @@ mockCdm <- function(cdmVocabulary = mockVocabularyCdm(),
     device_exposure = deviceExposure, ...
   )
 
-  cdm <- CDMUtilities::newCdmReference(
-    cdmTables = cdmTables, cdmName = cdmName, cdmVersion = attr()
-  )
+  # cdm <- newCdmReference(
+  #   cdmTables = cdmTables, cdmName = cdmName, cdmVersion = attr()
+  # )
 
   cdm <- generatePersonObservationPeriod(cdm, individuals, seed)
 
@@ -159,14 +159,14 @@ createCohortAttrition <- function(cohort) {
 #'
 #' @return A cdm_reference object
 #'
-#' @export
+#' @noRd
 #'
 generatePersonObservationPeriod <- function(cdm,
                                             individuals = NULL,
                                             seed = NULL,
                                             cdmVersion = attr(cdm, "cdm_version")) {
   # initial checks
-  CDMUtilities::checkInput(
+  checkInput(
     cdm = cdm, individuals = individuals, seed = seed, cdmVersion = cdmVersion
   )
 
@@ -374,7 +374,7 @@ observationPeriodFromCdm <- function(cdm, individuals) {
 #'
 #' @return A cdm_reference object
 #'
-#' @export
+#' @noRd
 #'
 generateClinicalDataTable <- function(cdm,
                                       tableName,
@@ -382,7 +382,7 @@ generateClinicalDataTable <- function(cdm,
                                       seed = NULL,
                                       cdmVersion = attr(cdm, "cdm_version")) {
   # initial checks
-  CDMUtilities::checkInput(
+  checkInput(
     cdm = cdm, tableName = tableName, numberRows = numberRows, seed = seed,
     cdmVersion = cdmVersion,
     .options = list(cdmRequiredTables = c("person", "observation_period"))
@@ -463,7 +463,7 @@ addDates <- function(x, cols, observationPeriod) {
 #'
 #' @return A cdm_reference object
 #'
-#' @export
+#' @noRd
 #'
 generateCohortTable <- function(cdm,
                                 tableName = "cohort",
@@ -473,7 +473,7 @@ generateCohortTable <- function(cdm,
                                 seed = NULL,
                                 cdmVersion = attr(cdm, "cdm_version")) {
   # initial checks
-  CDMUtilities::checkInput(
+  checkInput(
     cdm = cdm, tableName = tableName, cohortId = cohortId,
     cohortName = cohortName, numberRows = numberRows, seed = seed,
     cdmVersion = cdmVersion,
@@ -508,10 +508,10 @@ generateCohortTable <- function(cdm,
     cohort_definition_id = cohortId, cohort_name = cohortName
   )
 
-  # create class
-  cdm[[tableName]] <- CDMUtilities::newOmopCohort(
-    cohortTable = cohort, cohortSetTable = cohortSetTable
-  )
+  # # create class
+  # cdm[[tableName]] <- newOmopCohort(
+  #   cohortTable = cohort, cohortSetTable = cohortSetTable
+  # )
 
   return(cdm)
 }
