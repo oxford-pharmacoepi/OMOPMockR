@@ -24,6 +24,7 @@
 #' cdm
 #' }
 #'
+
 mockVocabularyCdm <- function(cdmSource = NULL,
                               concept = NULL,
                               vocabulary = NULL,
@@ -60,11 +61,11 @@ mockVocabularyCdm <- function(cdmSource = NULL,
   }
   names(cdmTables) <- snakecase::to_snake_case(names(cdmTables))
 
-  # cdm <- CDMUtilities::newCdmReference(
-  #   cdmTables = cdmTables, cdmName = cdmName, cdmVersion = cdmVersion
-  # )
+  cdm <- OMOPGenerics::cdmReference(
+    cdmTables = cdmTables, cdmName = cdmName, cdmVersion = cdmVersion
+  )
 
-  # return(cdm)
+  return(cdm)
 }
 
 fillColumns <- function(cdmTables, tableName, cdm_version) {

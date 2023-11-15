@@ -33,8 +33,8 @@
 #' library(OMOPGenerics)
 #' library(dplyr)
 #'
-#'# cdm <- mockCdm()
-#'# checkInput(cdm = cdm)
+#' # cdm <- mockCdm()
+#' # checkInput(cdm = cdm)
 #' }
 #'
 checkInput <- function(..., .options = list(), call = parent.frame()) {
@@ -54,12 +54,12 @@ checkInput <- function(..., .options = list(), call = parent.frame()) {
 
 config <- function(inputs, .options) {
   # check that inputs is a named list
-  if(!assertNamedList(inputs)) {
+  if (!assertNamedList(inputs)) {
     cli::cli_abort("Inputs must be named to know the check to be applied")
   }
 
   # check that .options is a named list
-  if(!assertNamedList(.options)) {
+  if (!assertNamedList(.options)) {
     cli::cli_abort(".options must be a named list")
   }
 
@@ -113,13 +113,14 @@ config <- function(inputs, .options) {
 }
 performChecks <- function(toCheck, inputs, call = call) {
   for (k in seq_len(nrow(toCheck))) {
-    x <- toCheck[k,]
+    x <- toCheck[k, ]
     nam <- ifelse(
       x$package == "OMOPGenerics", x$name, paste0(x$package, "::", x$name)
     )
     eval(parse(text = paste0(nam, "(", paste0(
       unlist(x$available_argument), " = inputs[[\"",
-      unlist(x$available_argument), "\"]]", collapse = ", "
+      unlist(x$available_argument), "\"]]",
+      collapse = ", "
     ), ", call = call)")))
   }
 }
@@ -150,7 +151,7 @@ getAvailableFunctions <- function() {
   # functions available in source package
   packageName <- methods::getPackageName()
   name <- getNamespaceExports(packageName)
-  functionsSourcePackage <- dplyr::tibble(package = packageName, name =  name)
+  functionsSourcePackage <- dplyr::tibble(package = packageName, name = name)
 
   # eliminate standard checks if present in source package
   functions <- functionsOMOPGenerics |>
@@ -178,12 +179,12 @@ addArgument <- function(functions) {
   functions |>
     dplyr::rowwise() |>
     dplyr::group_split() |>
-    lapply(function(x){
+    lapply(function(x) {
       nam <- ifelse(
         x$package == "OMOPGenerics", x$name, paste0(x$package, "::", x$name)
       )
       argument <- formals(eval(parse(text = nam)))
-      requiredArgument <- lapply(argument, function(x){
+      requiredArgument <- lapply(argument, function(x) {
         xx <- x
         missing(xx)
       })

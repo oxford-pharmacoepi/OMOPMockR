@@ -14,9 +14,8 @@ RoxygenNote: 7.2.3
 Imports: 
     cli,
     dplyr,
-    lubridate,
     methods,
-    purrr,
+    OMOPGenerics (>= 0.0.1),
     rlang,
     snakecase
 Depends: 
@@ -26,3 +25,5 @@ Suggests:
 URL: https://oxford-pharmacoepi.github.io/OmopMocker/
 Config/testthat/edition: 3
 Config/testthat/parallel: true
+Remotes:  
+    github::darwin-eu-dev/OMOPGenerics
