@@ -100,7 +100,7 @@ obsDate <- function(dob = dob, max = "2020-01-01") {
   end <- rep(as.Date(NA), length(dob))
   #generate obs start and end date
   for (i in seq_along(dob)) {
-    start[i] <- sample(seq(as.Date(dob), as.Date(max), by =
+    start[i] <- sample(seq(as.Date(dob[i]), as.Date(max), by =
                              "day"), 1)
     end[i] <- sample(seq(as.Date(start[i]), as.Date(max), by =
                            "day"), 1)
