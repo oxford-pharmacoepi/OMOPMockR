@@ -35,12 +35,12 @@ mockCdm <- function(cdmName ="mock cdm",
                     birthRange = c("1950-01-01","2000-12-31"),
                     seed = 1) {
   # check inputs
-  checkInput(
-    seed = seed,
-    cdmTables = list(person = person, observationPeriod = observationPeriod),
-    nPerson = nPerson,
-    birthRange = birthRange
-  )
+  # checkInput(
+  #   seed = seed,
+  #   cdmTables = list(person = person, observationPeriod = observationPeriod),
+  #   nPerson = nPerson,
+  #   birthRange = birthRange
+  # )
 
   # set seed if not null
   if (!is.null(seed)) {
