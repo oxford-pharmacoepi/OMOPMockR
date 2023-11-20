@@ -306,3 +306,18 @@ checkCdm <- function(cdm, tables = NULL, call = parent.env()) {
 checkCohort <- function(string, call = parent.frame()) {
   assertCharacter(string, na = TRUE, call = call)
 }
+
+# check nPerson
+checknPerson <- function(nPerson, call = parent.frame()) {
+  assertNumeric(nPerson, integerish = TRUE, min = 1, length = 1, call = call)
+}
+
+# check birthRange
+checkbirthRange <- function(birthRange, call = parent.frame()) {
+  assertList(birthRange, length = 2, call = call)
+
+  if(as.Date(birthRange[1]) >= as.Date(birthRange[2])){
+    cli::cli_abort("max date must be greater than min date ", call = call)
+  }
+
+}

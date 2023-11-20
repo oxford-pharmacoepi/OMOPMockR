@@ -17,6 +17,7 @@ Imports:
     methods,
     OMOPGenerics (>= 0.0.1),
     rlang,
+    lubridate,
     snakecase
 Depends: 
     R (>= 2.10)

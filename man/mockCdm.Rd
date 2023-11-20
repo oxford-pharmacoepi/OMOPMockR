@@ -9,6 +9,8 @@ mockCdm(
   cdmVersion = "5.3",
   person = NULL,
   observationPeriod = NULL,
+  nPerson = 5,
+  birthRange = c("1950-01-01", "2000-12-31"),
   seed = 1
 )
 }
@@ -20,6 +22,10 @@ mockCdm(
 \item{person}{person table}
 
 \item{observationPeriod}{observation_period table}
+
+\item{nPerson}{number of mock person to create in person table}
+
+\item{birthRange}{the date range of the person in person table}
 
 \item{seed}{random seed}
 }
