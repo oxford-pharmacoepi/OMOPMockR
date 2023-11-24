@@ -8,11 +8,11 @@ Function to generate synthetic Cohort}
 generateSyntheticCohortSet(
   cdm,
   tableName = "cohort",
-  numberCohorts = 2,
-  cohortName = paste0("cohort_", cohortId),
+  numberCohorts = 1,
+  cohortName = paste0("cohort_", seq_len(numberCohorts)),
   recordPerson = 1,
-  seed = NULL,
-  cdmVersion = attr(cdm, "cdm_version")
+  cdmVersion = attr(cdm, "cdm_version"),
+  seed = 1
 )
 }
 \arguments{
@@ -26,9 +26,9 @@ generateSyntheticCohortSet(
 
 \item{recordPerson}{the expected number of record per person}
 
-\item{seed}{random seed}
-
 \item{cdmVersion}{version number of the cdm}
+
+\item{seed}{random seed}
 }
 \value{
 A cdm reference with the mock tables

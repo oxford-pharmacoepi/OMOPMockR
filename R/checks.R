@@ -314,10 +314,33 @@ checknPerson <- function(nPerson, call = parent.frame()) {
 
 # check birthRange
 checkbirthRange <- function(birthRange, call = parent.frame()) {
-  assertList(birthRange, length = 2, call = call)
+  assertCharacter(birthRange, length = 2, call = call)
 
   if(as.Date(birthRange[1]) >= as.Date(birthRange[2])){
     cli::cli_abort("max date must be greater than min date ", call = call)
   }
 
+}
+
+#check table name
+checktableName <- function(tableName, call = parent.frame()) {
+  assertCharacter(tableName, na = FALSE, call = call)
+}
+
+# check recordPerson
+checkrecordPerson <- function(recordPerson, call = parent.frame()) {
+  assertNumeric(recordPerson,
+                integerish = FALSE, length = NULL, min = 0.01, call = call)
+
+}
+
+# check numberCohorts
+checknumberCohorts <- function(numberCohorts, call = parent.frame()) {
+  assertNumeric(numberCohorts,
+                integerish = TRUE,length = NULL, min = 1, call = call)
+}
+
+#check cohortName
+checkcohortName <- function(cohortName, call = parent.frame()) {
+  assertCharacter(cohortName, na = FALSE, call = call)
 }

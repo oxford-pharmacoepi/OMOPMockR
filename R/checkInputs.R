@@ -1,6 +1,6 @@
 # Copyright 2023 DARWIN EU (C)
 #
-# This file is part of OMOPGenerics
+# This file is part of OmopMocker
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,11 +30,11 @@
 #'
 #' @examples
 #' \donttest{
-#' library(OMOPGenerics)
+#' library(OmopMocker)
 #' library(dplyr)
 #'
-#' # cdm <- mockCdm()
-#' # checkInput(cdm = cdm)
+#'# cdm <- mockCdm()
+#'# checkInput(cdm = cdm)
 #' }
 #'
 checkInput <- function(..., .options = list(), call = parent.frame()) {
@@ -54,18 +54,18 @@ checkInput <- function(..., .options = list(), call = parent.frame()) {
 
 config <- function(inputs, .options) {
   # check that inputs is a named list
-  if (!assertNamedList(inputs)) {
+  if(!assertNamedList(inputs)) {
     cli::cli_abort("Inputs must be named to know the check to be applied")
   }
 
   # check that .options is a named list
-  if (!assertNamedList(.options)) {
+  if(!assertNamedList(.options)) {
     cli::cli_abort(".options must be a named list")
   }
 
   # check names in .options different from inputs
   if (any(names(.options) %in% names(inputs))) {
-    cli::cli_abort("Option names cna not be the same than an input.")
+    cli::cli_abort("Option names can not be the same than an input.")
   }
 
   # read available functions
@@ -113,14 +113,13 @@ config <- function(inputs, .options) {
 }
 performChecks <- function(toCheck, inputs, call = call) {
   for (k in seq_len(nrow(toCheck))) {
-    x <- toCheck[k, ]
+    x <- toCheck[k,]
     nam <- ifelse(
-      x$package == "OMOPGenerics", x$name, paste0(x$package, "::", x$name)
+      x$package == "OmopMocker", x$name, paste0(x$package, "::", x$name)
     )
     eval(parse(text = paste0(nam, "(", paste0(
       unlist(x$available_argument), " = inputs[[\"",
-      unlist(x$available_argument), "\"]]",
-      collapse = ", "
+      unlist(x$available_argument), "\"]]", collapse = ", "
     ), ", call = call)")))
   }
 }
@@ -144,17 +143,23 @@ assertNamedList <- function(input) {
 #' @noRd
 #'
 getAvailableFunctions <- function() {
-  # functions available in OMOPGenerics
-  name <- ls(getNamespace("OMOPGenerics"), all.names = TRUE)
-  functionsOMOPGenerics <- dplyr::tibble(package = "OMOPGenerics", name = name)
+  # functions available in OmopMocker
+  name <- ls(getNamespace("OmopMocker"), all.names = TRUE)
+  functionsOmopMocker <- dplyr::tibble(package = "OmopMocker", name = name)
 
   # functions available in source package
   packageName <- methods::getPackageName()
-  name <- getNamespaceExports(packageName)
-  functionsSourcePackage <- dplyr::tibble(package = packageName, name = name)
+  if (packageName != ".GlobalEnv") {
+    name <- getNamespaceExports(packageName)
+    functionsSourcePackage <- dplyr::tibble(package = packageName, name =  name)
+  } else {
+    functionsSourcePackage <- dplyr::tibble(
+      package = character(), name =  character()
+    )
+  }
 
   # eliminate standard checks if present in source package
-  functions <- functionsOMOPGenerics |>
+  functions <- functionsOmopMocker |>
     dplyr::anti_join(functionsSourcePackage, by = "name") |>
     dplyr::union_all(functionsSourcePackage) |>
     dplyr::filter(
@@ -166,7 +171,7 @@ getAvailableFunctions <- function() {
     ))
 
   # add argument
-  functions <- addArgument(functions)
+  functions <- addArgument(functions, exclude = "call")
 
   return(functions)
 }
@@ -175,16 +180,17 @@ getAvailableFunctions <- function() {
 #'
 #' @noRd
 #'
-addArgument <- function(functions) {
+addArgument <- function(functions, exclude = character()) {
   functions |>
     dplyr::rowwise() |>
     dplyr::group_split() |>
-    lapply(function(x) {
+    lapply(function(x){
       nam <- ifelse(
-        x$package == "OMOPGenerics", x$name, paste0(x$package, "::", x$name)
+        x$package == "OmopMocker", x$name, paste0(x$package, "::", x$name)
       )
       argument <- formals(eval(parse(text = nam)))
-      requiredArgument <- lapply(argument, function(x) {
+      argument <- argument[!names(argument) %in% exclude]
+      requiredArgument <- lapply(argument, function(x){
         xx <- x
         missing(xx)
       })

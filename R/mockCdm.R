@@ -35,20 +35,16 @@ mockCdm <- function(cdmName ="mock cdm",
                     birthRange = c("1950-01-01","2000-12-31"),
                     seed = 1) {
   # check inputs
-  # checkInput(
-  #   seed = seed,
-  #   cdmTables = list(person = person, observationPeriod = observationPeriod),
-  #   nPerson = nPerson,
-  #   birthRange = birthRange
-  # )
-
-  # set seed if not null
-  if (!is.null(seed)) {
-    set.seed(seed = seed)
-  }
+  checkInput(
+    cdmName = cdmName,
+    cdmVersion = cdmVersion,
+    nPerson = nPerson,
+    birthRange = birthRange,
+    seed = seed
+  )
 
   #generate mock person and observation details
-  person_id <- 1:nPerson
+  person_id <- seq_len(nPerson)
 
   dob <-
     sample(seq(as.Date(birthRange[1]), as.Date(birthRange[2]), by =
@@ -70,8 +66,18 @@ mockCdm <- function(cdmName ="mock cdm",
       month_of_birth = as.character(lubridate::month(dob)),
       day_of_birth = as.character(lubridate::day(dob))
     )
-
+    person <- person |>
+      dplyr::mutate(race_concept_id = NA, ethnicity_concept_id = NA)
   }
+
+  if (!"race_concept_id" %in% names(person)) {
+    person <- person |> dplyr::mutate(race_concept_id = NA)
+  }
+
+  if (!"ethnicity_concept_id" %in% names(person)) {
+    person <- person |> dplyr::mutate(ethnicity_concept_id = NA)
+  }
+
   # set observation period if null
   if (is.null(observationPeriod)) {
     observation_period = dplyr::tibble(
@@ -80,12 +86,18 @@ mockCdm <- function(cdmName ="mock cdm",
       observation_period_start_date = as.Date(observationDate[[1]]),
       observation_period_end_date = as.Date(observationDate[[2]])
     )
+  }
 
+  if (!"period_type_concept_id" %in% names(observationPeriod)) {
+    observation_period <-
+      observation_period |> dplyr::mutate(period_type_concept_id = NA)
   }
 
   cdmTables <- list(person = person, observation_period = observation_period)
 
-  cdm <- OMOPGenerics::cdmReference(cdmTables = cdmTables, cdmVersion = cdmVersion, cdmName = cdmName)
+  cdm <- OMOPGenerics::cdmReference(
+    cdmTables = cdmTables, cdmVersion = cdmVersion,
+    cdmName = cdmName, cohortTables = list())
 
   return(cdm)
 

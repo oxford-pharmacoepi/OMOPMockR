@@ -32,29 +32,31 @@
 #'
 generateSyntheticCohortSet <- function(cdm,
                                        tableName = "cohort",
-                                       numberCohorts = 2,
-                                       cohortName = paste0("cohort_", cohortId),
+                                       numberCohorts = 1,
+                                       cohortName = paste0("cohort_", seq_len(numberCohorts)),
                                        recordPerson = 1,
-                                       seed = NULL,
-                                       cdmVersion = attr(cdm, "cdm_version")) {
+                                       cdmVersion = attr(cdm, "cdm_version"),
+                                       seed = 1) {
 
   # initial checks
-  # checkInput(
-  #   cdm = cdm, tableName = tableName, cohortId = cohortId,
-  #   cohortName = cohortName, numberRows = numberRows, seed = seed,
-  #   cdmVersion = cdmVersion,
-  #   .options = list(cdmRequiredTables = c("person", "observation_period"))
-  # )
+  checkInput(cdm = cdm, tableName = tableName, numberCohorts = numberCohorts,
+             cohortName = cohortName,recordPerson = recordPerson,
+             cdmVersion = cdmVersion, seed = seed)
 
-  if (!is.null(seed)) {
-    set.seed(seed = seed)
+  if (length(recordPerson) > 1) {
+    if (length(recordPerson) != numberCohorts) {
+      cli::cli_abort("recordPerson should have length 1 or length same as numberCohorts ")
+    }
   }
 
-  #generate synthenic cohort id
-  cohortId = 1:numberCohorts
+  if (length(cohortName) != numberCohorts) {
+    cli::cli_abort("cohortName do not contain same number of name as numberCohort")
+  }
+  #generate synthetic cohort id
+  cohortId = seq_len(numberCohorts)
 
   #number of rows per cohort
-  numberRows <- recordPerson*(cdm$person |> nrow()) |> round()
+  numberRows <- recordPerson*(cdm$person |> dplyr::tally() |> dplyr::pull()) |> round()
 
   # generate cohort table
   cohort <- list()
@@ -62,11 +64,11 @@ generateSyntheticCohortSet <- function(cdm,
     numberRows <- rep(numberRows, length(cohortId))
   }
   for (i in seq_along(cohortId)) {
-    num <- numberRows[i]
+    num <- numberRows[[i]]
     cohort[[i]] <- dplyr::tibble(
       cohort_definition_id = cohortId[i],
       subject_id = sample(
-        x = cdm$person$person_id, size = num, replace = TRUE
+        x = cdm$person |> dplyr::pull("person_id"), size = num, replace = TRUE
       )
     ) |>
       addDates(
@@ -76,13 +78,16 @@ generateSyntheticCohortSet <- function(cdm,
   cohort <- dplyr::bind_rows(cohort)
 
   # generate cohort set table
+
+  cohortName <- snakecase::to_snake_case(cohortName)
+
   cohortSetTable <- dplyr::tibble(
     cohort_definition_id = cohortId, cohort_name = cohortName
   )
 
   # create class
   cdm[[tableName]] <- OMOPGenerics::generatedCohortSet(
-    cohortTable = cohort,cohortSetTable = cohortSetTable, cohortName = tableName)
+    cohortRef = cohort,cohortSetRef = cohortSetTable, cohortName = tableName)
 
   return(cdm)
 }
