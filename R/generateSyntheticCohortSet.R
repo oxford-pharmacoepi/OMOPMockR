@@ -52,6 +52,11 @@ generateSyntheticCohortSet <- function(cdm,
   if (length(cohortName) != numberCohorts) {
     cli::cli_abort("cohortName do not contain same number of name as numberCohort")
   }
+
+  if (!is.null(seed)) {
+    set.seed(seed = seed)
+  }
+
   #generate synthetic cohort id
   cohortId = seq_len(numberCohorts)
 
@@ -71,7 +76,7 @@ generateSyntheticCohortSet <- function(cdm,
         x = cdm$person |> dplyr::pull("person_id"), size = num, replace = TRUE
       )
     ) |>
-      addDates(
+      addCohortDates(
         start = "cohort_start_date", end ="cohort_end_date", observationPeriod = cdm$observation_period
       )
   }
@@ -96,7 +101,7 @@ generateSyntheticCohortSet <- function(cdm,
 
 
 
-addDates <- function(x, start = "cohort_start_date",end = "cohort_end_date", observationPeriod) {
+addCohortDates <- function(x, start = "cohort_start_date",end = "cohort_end_date", observationPeriod) {
 
   if (sum(length(start),length(end)) > 0) {
       x <- x |>

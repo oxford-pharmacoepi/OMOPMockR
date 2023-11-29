@@ -95,3 +95,4 @@ test_that("cohort table functionality", {
       numberCohorts = 3, cohortName = c("c_1","c_2")))
 
 })
+

@@ -18,7 +18,8 @@ Imports:
     OMOPGenerics (>= 0.0.1),
     rlang,
     lubridate,
-    snakecase
+    snakecase,
+    stats
 Depends: 
     R (>= 2.10)
 Suggests: 
@@ -26,5 +27,5 @@ Suggests:
 URL: https://oxford-pharmacoepi.github.io/OmopMocker/
 Config/testthat/edition: 3
 Config/testthat/parallel: true
-Remotes:  
+Remotes: 
     github::darwin-eu-dev/OMOPGenerics

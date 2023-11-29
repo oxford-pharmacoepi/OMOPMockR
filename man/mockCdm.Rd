@@ -7,10 +7,19 @@
 mockCdm(
   cdmName = "mock cdm",
   cdmVersion = "5.3",
+  cdmVocabulary = mockVocabularyCdm(),
   person = NULL,
   observationPeriod = NULL,
   nPerson = 5,
   birthRange = c("1950-01-01", "2000-12-31"),
+  death = NULL,
+  conditionOccurrence = NULL,
+  drugExposure = NULL,
+  procedureOccurrence = NULL,
+  deviceExposure = NULL,
+  measurement = NULL,
+  observation = NULL,
+  numberRecords = c(default = 2),
   seed = 1
 )
 }
@@ -19,6 +28,8 @@ mockCdm(
 
 \item{cdmVersion}{version number of the cdm}
 
+\item{cdmVocabulary}{vocabulary tables of the cdm}
+
 \item{person}{person table}
 
 \item{observationPeriod}{observation_period table}
@@ -26,6 +37,22 @@ mockCdm(
 \item{nPerson}{number of mock person to create in person table}
 
 \item{birthRange}{the date range of the person in person table}
+
+\item{death}{death table.}
+
+\item{conditionOccurrence}{Condition occurrence table.}
+
+\item{drugExposure}{DrugExposure table.}
+
+\item{procedureOccurrence}{Procedure occurrence table.}
+
+\item{deviceExposure}{Device exposure table.}
+
+\item{measurement}{Measurement table.}
+
+\item{observation}{Observation table.}
+
+\item{numberRecords}{number of records per person.}
 
 \item{seed}{random seed}
 }

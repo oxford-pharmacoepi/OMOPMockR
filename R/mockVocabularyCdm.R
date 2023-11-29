@@ -36,15 +36,15 @@ mockVocabularyCdm <- function(cdmSource = NULL,
                               sourceToConceptMap = NULL,
                               drugStrength = NULL,
                               cdmVersion = "5.3",
-                              cdmName = "MOCK VOCABULARY") {
+                              cdmName = "mock cdm") {
   # check inputs
-  # checkInput(
-  #   cdmSource = cdmSource, concept = concept, vocabulary = vocabulary,
-  #   domain = domain, conceptClass = conceptClass,
-  #   conceptRelationship = conceptRelationship, conceptSynonym = conceptSynonym,
-  #   conceptAncestor = conceptAncestor, sourceToConceptMap = sourceToConceptMap,
-  #   drugStrength = drugStrength, cdmVersion = cdmVersion, cdmName = cdmName
-  # )
+  checkInput(
+    cdmSource = cdmSource, concept = concept, vocabulary = vocabulary,
+    domain = domain, conceptClass = conceptClass,
+    conceptRelationship = conceptRelationship, conceptSynonym = conceptSynonym,
+    conceptAncestor = conceptAncestor, sourceToConceptMap = sourceToConceptMap,
+    drugStrength = drugStrength, cdmVersion = cdmVersion, cdmName = cdmName
+  )
 
   # create the list of tables
   cdmTables <- list(
@@ -57,15 +57,13 @@ mockVocabularyCdm <- function(cdmSource = NULL,
 
   # fill tables
   for (nam in names(cdmTables)) {
-    cdmTables <- fillColumns(cdmTables, nam, cdmVersion)
-  }
+    cdmTables <- fillColumns(cdmTables, nam, cdmVersion)}
+
   names(cdmTables) <- snakecase::to_snake_case(names(cdmTables))
+  cdmTables$cdm_source <- cdmTables$cdm_source |>
+    dplyr::mutate(cdm_version = as.character(.data$cdm_version))
 
-  cdm <- OMOPGenerics::cdmReference(
-    cdmTables = cdmTables, cdmName = cdmName, cdmVersion = cdmVersion
-  )
-
-  return(cdm)
+  return(cdmTables)
 }
 
 fillColumns <- function(cdmTables, tableName, cdm_version) {
@@ -78,6 +76,7 @@ fillColumns <- function(cdmTables, tableName, cdm_version) {
   cdmTables[[tableName]] <- table
   return(cdmTables)
 }
+
 defaultTable <- function(tableName) {
   if (tableName %in% c("conceptRelationship", "conceptSynonym", "sourceToConceptMap")) {
     cols <- fieldsTables |>
@@ -105,6 +104,7 @@ defaultTable <- function(tableName) {
   }
   return(x)
 }
+
 correctTable <- function(table, tableName, cdmVersion, warning = TRUE) {
   expectedColnames <- fieldsTables |>
     dplyr::filter(
