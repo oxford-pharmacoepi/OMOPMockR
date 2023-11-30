@@ -5,11 +5,13 @@
 \title{It creates a mock cdm_reference.}
 \usage{
 mockCdm(
+  cdmName = "mock cdm",
+  cdmVersion = "5.3",
   cdmVocabulary = mockVocabularyCdm(),
-  cdmName = "MOCK CDM",
-  individuals = NULL,
   person = NULL,
   observationPeriod = NULL,
+  nPerson = 5,
+  birthRange = c("1950-01-01", "2000-12-31"),
   death = NULL,
   conditionOccurrence = NULL,
   drugExposure = NULL,
@@ -18,21 +20,23 @@ mockCdm(
   measurement = NULL,
   observation = NULL,
   numberRecords = c(default = 2),
-  seed = 1,
-  ...
+  seed = 1
 )
 }
 \arguments{
-\item{cdmVocabulary}{A cdm_reference that contains the vocabulary tables.}
-
 \item{cdmName}{Name of the cdm.}
 
-\item{individuals}{Number of individuals in the mock database or table with
-the demographics data.}
+\item{cdmVersion}{version number of the cdm}
 
-\item{person}{Person table.}
+\item{cdmVocabulary}{vocabulary tables of the cdm}
 
-\item{observationPeriod}{Observation period table.}
+\item{person}{person table}
+
+\item{observationPeriod}{observation_period table}
+
+\item{nPerson}{number of mock person to create in person table}
+
+\item{birthRange}{the date range of the person in person table}
 
 \item{death}{death table.}
 
@@ -50,10 +54,7 @@ the demographics data.}
 
 \item{numberRecords}{number of records per person.}
 
-\item{seed}{Random seed.}
-
-\item{...}{Tables to be added to the cdm. If cohorts the attributes will be
-updated.}
+\item{seed}{random seed}
 }
 \value{
 A cdm reference with the mock tables

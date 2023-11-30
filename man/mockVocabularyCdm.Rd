@@ -16,7 +16,7 @@ mockVocabularyCdm(
   sourceToConceptMap = NULL,
   drugStrength = NULL,
   cdmVersion = "5.3",
-  cdmName = "MOCK VOCABULARY"
+  cdmName = "mock cdm"
 )
 }
 \arguments{

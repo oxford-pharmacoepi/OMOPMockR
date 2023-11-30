@@ -53,47 +53,47 @@ checkCdmSource <- function(cdmSource, call = parent.frame()) {
 }
 
 # Check concept table.
-checkConcept <- function(concept, call = parent.frame()){
+checkConcept <- function(concept, call = parent.frame()) {
   assertTibble(concept, null = TRUE, call = call)
 }
 
 # Check vocabulary table.
-checkVocabulary <- function(vocabulary, call = parent.frame()){
+checkVocabulary <- function(vocabulary, call = parent.frame()) {
   assertTibble(vocabulary, null = TRUE, call = call)
 }
 
 # Check domain table.
-checkDomain <- function(domain, call = parent.frame()){
+checkDomain <- function(domain, call = parent.frame()) {
   assertTibble(domain, null = TRUE, call = call)
 }
 
 # Check conceptClass table.
-checkConceptClass <- function(conceptClass, call = parent.frame()){
+checkConceptClass <- function(conceptClass, call = parent.frame()) {
   assertTibble(conceptClass, null = TRUE, call = call)
 }
 
 # Check conceptRelationship table.
-checkConceptRelationship <- function(conceptRelationship, call = parent.frame()){
+checkConceptRelationship <- function(conceptRelationship, call = parent.frame()) {
   assertTibble(conceptRelationship, null = TRUE, call = call)
 }
 
 # Check conceptSynonym table.
-checkConceptSynonym <- function(conceptSynonym, call = parent.frame()){
+checkConceptSynonym <- function(conceptSynonym, call = parent.frame()) {
   assertTibble(conceptSynonym, null = TRUE, call = call)
 }
 
 # Check conceptAncestor table.
-checkConceptAncestor <- function(conceptAncestor, call = parent.frame()){
+checkConceptAncestor <- function(conceptAncestor, call = parent.frame()) {
   assertTibble(conceptAncestor, null = TRUE, call = call)
 }
 
 # Check sourceToConceptMap table.
-checkSourceToConceptMap <- function(sourceToConceptMap, call = parent.frame()){
+checkSourceToConceptMap <- function(sourceToConceptMap, call = parent.frame()) {
   assertTibble(sourceToConceptMap, null = TRUE, call = call)
 }
 
 # Check drugStrength table.
-checkDrugStrength <- function(drugStrength, call = parent.frame()){
+checkDrugStrength <- function(drugStrength, call = parent.frame()) {
   assertTibble(drugStrength, null = TRUE, call = call)
 }
 
@@ -204,7 +204,8 @@ checkIndividuals <- function(individuals, person, call = parent.frame()) {
       assertTibble(individuals, columns = columns, call = call)
     } else {
       cli::cli_abort(
-        "individuals must be a numeric or a tbl element", call = call
+        "individuals must be a numeric or a tbl element",
+        call = call
       )
     }
   } else {
@@ -280,4 +281,66 @@ checkNumberRecords <- function(numberRecords, call = parent.frame()) {
   if (!all(nam %in% names(numberRecords)) && TRUE) {
 
   }
+}
+
+# check cdm
+checkCdm <- function(cdm, tables = NULL, call = parent.env()) {
+  if (!isTRUE(inherits(cdm, "cdm_reference"))) {
+    cli::cli_abort("cdm must be a CDMConnector CDM reference object", call = call)
+  }
+  if (!is.null(tables)) {
+    tables <- tables[!(tables %in% names(cdm))]
+    if (length(tables) > 0) {
+      cli::cli_abort(paste0(
+        "tables: ",
+        paste0(tables, collapse = ", "),
+        "are not present in the cdm object"
+      ), call = call)
+    }
+  }
+  invisible(NULL)
+}
+
+#check cdm cohort
+
+checkCohort <- function(string, call = parent.frame()) {
+  assertCharacter(string, na = TRUE, call = call)
+}
+
+# check nPerson
+checknPerson <- function(nPerson, call = parent.frame()) {
+  assertNumeric(nPerson, integerish = TRUE, min = 1, length = 1, call = call)
+}
+
+# check birthRange
+checkbirthRange <- function(birthRange, call = parent.frame()) {
+  assertCharacter(birthRange, length = 2, call = call)
+
+  if(as.Date(birthRange[1]) >= as.Date(birthRange[2])){
+    cli::cli_abort("max date must be greater than min date ", call = call)
+  }
+
+}
+
+#check table name
+checktableName <- function(tableName, call = parent.frame()) {
+  assertCharacter(tableName, na = FALSE, call = call)
+}
+
+# check recordPerson
+checkrecordPerson <- function(recordPerson, call = parent.frame()) {
+  assertNumeric(recordPerson,
+                integerish = FALSE, length = NULL, min = 0.01, call = call)
+
+}
+
+# check numberCohorts
+checknumberCohorts <- function(numberCohorts, call = parent.frame()) {
+  assertNumeric(numberCohorts,
+                integerish = TRUE,length = NULL, min = 1, call = call)
+}
+
+#check cohortName
+checkcohortName <- function(cohortName, call = parent.frame()) {
+  assertCharacter(cohortName, na = FALSE, call = call)
 }

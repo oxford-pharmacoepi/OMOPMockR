@@ -6,10 +6,3 @@ template:
 navbar:
   structure:
     right: [github]
-
-reference:
-  - title: Create a mock vocaulary
-  - subtitle: Set of functions to create a mock vocabulary
-    contents:
-      - '`mockCdm`'
-      - '`mockVocabularyCdm`'
