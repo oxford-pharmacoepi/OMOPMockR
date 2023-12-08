@@ -22,7 +22,6 @@
 #' @param person person table
 #' @param observationPeriod observation_period table
 #' @param nPerson number of mock person to create in person table
-#' @param birthRange the date range of the person in person table
 #' @param death death table.
 #' @param conditionOccurrence Condition occurrence table.
 #' @param drugExposure DrugExposure table.
@@ -30,8 +29,7 @@
 #' @param deviceExposure Device exposure table.
 #' @param measurement Measurement table.
 #' @param observation Observation table.
-#' @param numberRecords number of records per person.
-#' @param seed random seed
+#' @param options list of default options
 #'
 #' @return A cdm reference with the mock tables
 #' @export
@@ -42,7 +40,6 @@ mockCdm <- function(cdmName ="mock cdm",
                     person = NULL,
                     observationPeriod = NULL,
                     nPerson = 5,
-                    birthRange = c("1950-01-01","2000-12-31"),
                     death = NULL,
                     conditionOccurrence = NULL,
                     drugExposure = NULL,
@@ -50,13 +47,14 @@ mockCdm <- function(cdmName ="mock cdm",
                     deviceExposure = NULL,
                     measurement = NULL,
                     observation = NULL,
-                    numberRecords = c(default = 2),
-                    seed = 1) {
+                    options = list()) {
+
+  options <- addDefaultOptions(options)
   # check inputs
   checkInput(
     cdmName = cdmName,cdmVersion = cdmVersion,nPerson = nPerson,
-    birthRange = birthRange,seed = seed,numberRecords = numberRecords,
-    seed = seed, cdmTables = list(
+    birthRange = options$birthRange,seed = options$seed,numberRecords = options$numberRecords,
+    cdmTables = list(
       person = person, observationPeriod = observationPeriod, death = death,
       conditionOccurrence = conditionOccurrence, drugExposure = drugExposure,
       procedureOccurrence = procedureOccurrence,
@@ -64,20 +62,20 @@ mockCdm <- function(cdmName ="mock cdm",
       observation = observation)
   )
 
-  if (!is.null(seed)) {
-    set.seed(seed = seed)
+  if (!is.null(options$seed)) {
+    set.seed(seed = options$seed)
   }
 
   #generate mock person and observation details
   person_id <- seq_len(nPerson)
 
   dob <-
-    sample(seq(as.Date(birthRange[1]), as.Date(birthRange[2]), by =
+    sample(seq(as.Date(options$birthRange[1]), as.Date(options$birthRange[2]), by =
                  "day"), length(person_id), replace = TRUE)
 
   observationDate <- obsDate(
     dob = dob, max = max(as.Date("2020-01-01"),
-                         as.Date(as.Date(birthRange[2]))))
+                         as.Date(as.Date(options$birthRange[2]))))
 
 
   gender <- sample(c(8507, 8532), length(person_id), TRUE)
@@ -137,13 +135,13 @@ mockCdm <- function(cdmName ="mock cdm",
   )
   for (tab in clinical) {
     if (is.null(cdm[[tab]])) {
-      if (tab %in% names(numberRecords)) {
-        records <- round(unname(numberRecords[tab]) * nrow(cdm$person))
+      if (tab %in% names(options$numberRecords)) {
+        records <- round(unname(options$numberRecords[tab]) * nrow(cdm$person))
       } else {
         records <-
-          round(unname(numberRecords["default"]) * nrow(cdm$person))
+          round(unname(options$numberRecords["default"]) * nrow(cdm$person))
       }
-      cdm[[tab]] <- generateClinicalDataTable(cdm, tab, records, seed = seed)
+      cdm[[tab]] <- generateClinicalDataTable(cdm, tab, records, seed = options$seed)
     }
   }
 
@@ -262,3 +260,21 @@ generateClinicalDataTable <- function(cdm,
 
   return(table)
 }
+
+ #default options
+
+addDefaultOptions <- function(options) {
+
+  default <- list(
+    birthRange = c("1950-01-01","2000-12-31"),
+    seed = 1,
+    numberRecords = c(default = 2)
+  )
+  for (opt in names(default)) {
+    if (!opt %in% names(options)) {
+      options[[opt]] <- default[[opt]]
+    }
+  }
+  return(options)
+}
+
