@@ -10,7 +10,7 @@ test_that("mock person and observation_period", {
                     cdm$person |> dplyr::select("gender_concept_id") |> unique() |> dplyr::pull()))
 
   #check birthdayRange is working
-  cdm <- mockCdm(nPerson = 5, birthRange = c("1950-01-01","1950-12-31"))
+  cdm <- mockCdm(nPerson = 5, options = list(birthRange = c("1950-01-01","1950-12-31")))
   expect_true(cdm$person |> dplyr::select("year_of_birth") |> unique() == 1950)
 
   #check observation_period working

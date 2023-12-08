@@ -11,7 +11,6 @@ mockCdm(
   person = NULL,
   observationPeriod = NULL,
   nPerson = 5,
-  birthRange = c("1950-01-01", "2000-12-31"),
   death = NULL,
   conditionOccurrence = NULL,
   drugExposure = NULL,
@@ -19,8 +18,7 @@ mockCdm(
   deviceExposure = NULL,
   measurement = NULL,
   observation = NULL,
-  numberRecords = c(default = 2),
-  seed = 1
+  options = list()
 )
 }
 \arguments{
@@ -36,8 +34,6 @@ mockCdm(
 
 \item{nPerson}{number of mock person to create in person table}
 
-\item{birthRange}{the date range of the person in person table}
-
 \item{death}{death table.}
 
 \item{conditionOccurrence}{Condition occurrence table.}
@@ -52,9 +48,7 @@ mockCdm(
 
 \item{observation}{Observation table.}
 
-\item{numberRecords}{number of records per person.}
-
-\item{seed}{random seed}
+\item{options}{list of default options}
 }
 \value{
 A cdm reference with the mock tables
